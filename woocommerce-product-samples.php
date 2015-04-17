@@ -2,7 +2,7 @@
 /*
   Plugin Name: WooCommerce Product Samples
   Plugin URI: http://milentijevic.com/wordpress-plugins/wocommerce-product-samples/
-  Version: 0.2.1
+  Version: 0.2.2
   Description: Sell or Give Samples of WooCommerce Products.
   Author: Mladjo
   Author URI: http://milentijevic.com

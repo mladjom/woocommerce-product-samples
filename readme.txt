@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=QXZZJ
 Tags: woocommerce, e-commerce, ecommerce, free sample, sample, plugin, wordpress,  cart, checkout, commerce, woothemes, wordpress ecommerce
 Requires at least: 3.8
 Tested up to: 4.2.0
-Stable tag: 0.2.1
+Stable tag: 0.2.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -43,6 +43,9 @@ All other products can be configured to have or not sample product.
 3. Frontend.
 
 == Changelog ==
+
+= 0.2.2 =
+* Bug fixies
 
 = 0.2.1 =
 * CSS fixies

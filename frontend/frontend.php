@@ -20,9 +20,11 @@ function wcs_samples_name_validation() {
 add_action('woocommerce_add_to_cart', 'save_name_on_parent_field', 1, 5);
 
 function save_name_on_parent_field($cart_item_key, $product_id = null, $quantity = null, $variation_id = null, $variation = null) {
-    WC()->session->set($cart_item_key . '_name_of_parent', $_REQUEST['wcs-specimen-parent']);
-}
+    if (!empty($_REQUEST['wcs-specimen-parent'])) {
+        WC()->session->set($cart_item_key . '_name_of_parent', $_REQUEST['wcs-specimen-parent']);
+    }
 
+}
 /**
  * The following hook will render the custom data in your cart page.
  */
@@ -34,7 +36,7 @@ function render_meta_on_cart_item($title = null, $cart_item = null, $cart_item_k
 				 <dd class=""><p>' . WC()->session->get($cart_item_key . '_name_of_parent') . '</p></dd>
 			  </dl>';
     } else {
-        echo $title;
+        return $title;
     }
 }
 
