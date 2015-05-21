@@ -5,13 +5,13 @@
  */
 //add_action('woocommerce_add_to_cart_validation', 'wcs_samples_name_validation', 1, 5);
 
-function wcs_samples_name_validation() {
-    if (empty($_REQUEST['wcs-specimen-parent'])) {
-        wc_add_notice(__('Something went terribly wrong', 'wcs'), 'error');
-        return false;
-    }
-    return true;
-}
+//function wcs_samples_name_validation() {
+//    if (empty($_REQUEST['wcs-specimen-parent'])) {
+//        wc_add_notice(__('Something went terribly wrong', 'wcs'), 'error');
+//        return false;
+//    }
+//    return true;
+//}
 
 /**
  * This code will store the custom fields ( for the product that is being added to cart ) 

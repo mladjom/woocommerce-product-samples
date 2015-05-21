@@ -22,7 +22,7 @@ function wcs_single_button() {
             <form class="cart" method="post" enctype='multipart/form-data'>
                 <input type="hidden" name="wcs-specimen-parent" value="<?php echo the_title(); ?>" />
                 <input type="hidden" name="add-to-cart" value="<?php echo get_option('wcs_id'); ?>" />
-                <button type="submit" data-quantity="1" data-product_id="<?php echo get_option('wcs_id'); ?>" class="btn btn-success button alt sample_add_to_cart single_add_to_cart_button"><?php echo 'Add Sample to cart'; ?></button>
+                <button type="submit" data-quantity="1" data-product_id="<?php echo get_option('wcs_id'); ?>" class="btn btn-success button alt sample_add_to_cart single_add_to_cart_button"><?php _e('Add Sample to cart', 'wcu') ?></button>
             </form>                
         </div>
 
