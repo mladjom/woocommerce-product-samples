@@ -1,8 +1,9 @@
 <?php
+
 /*
   Plugin Name: WooCommerce Product Samples
   Plugin URI: http://milentijevic.com/wordpress-plugins/wocommerce-product-samples/
-  Version: 0.2.2
+  Version: 0.3.0
   Description: Sell or Give Samples of WooCommerce Products.
   Author: Mladjo
   Author URI: http://milentijevic.com
@@ -50,13 +51,18 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
              * Initialize the plugin.
              */
             public function init() {
-                add_filter('woocommerce_settings_tabs_array', __CLASS__ . '::add_settings_tab', 50);
-                add_action('woocommerce_settings_tabs_settings_tab_wcs', __CLASS__ . '::settings_tab');
-                add_action('woocommerce_update_options_settings_tab_wcs', __CLASS__ . '::update_settings');
+                add_filter('get_terms', array(&$this,'get_subcategory_terms'), 10, 3);
                 add_action('pre_get_posts', array(&$this, 'custom_pre_get_posts_query'));
                 $this->multiple_select_categories();
             }
-
+	/**
+	 * Returns the upsell product ids.
+	 *
+	 * @return array
+	 */
+	public function get_upsells() {
+		return (array) maybe_unserialize( $this->upsell_ids );
+	}
             /**
              * load_localisation function.
              *
@@ -75,98 +81,35 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
              */
             private function includes() {
                 include_once( 'admin/writepanel-product_data.php' );
+                include_once( 'admin/class-wcs-admin-settings.php' );
                 //include_once( 'admin/quick-edit.php' );
                 include_once( 'templates/sample-product.php' );
                 include_once( 'frontend/frontend.php' );
             }
 
-            /**
-             * Add a new settings tab to the WooCommerce settings tabs array.
-             *
-             * @param array $settings_tabs Array of WooCommerce setting tabs & their labels, excluding the Subscription tab.
-             * @return array $settings_tabs Array of WooCommerce setting tabs & their labels, including the Subscription tab.
-             */
-            public static function add_settings_tab($settings_tabs) {
-                $settings_tabs['settings_tab_wcs'] = __('Product Samples', 'woocommerce-settings-tab-wcs');
-                return $settings_tabs;
-            }
+            // Exclude Categories from Shop
+            public function get_subcategory_terms($terms, $taxonomies, $args) {
 
-            /**
-             * Uses the WooCommerce admin fields API to output settings via the @see woocommerce_admin_fields() function.
-             *
-             * @uses woocommerce_admin_fields()
-             * @uses self::get_settings()
-             */
-            public static function settings_tab() {
+                $new_terms = array();
 
-//                	if ( ! class_exists( 'WC_Admin_Settings' ) )
-//		include 'class-wc-admin-settings.php';
-//
-//	WC_Admin_Settings::output_fields( $options );
+                // if a product category and on the shop page
+                if (in_array('product_cat', $taxonomies) && !is_admin() && is_shop()) {
 
+                    foreach ($terms as $key => $term) {
 
-                woocommerce_admin_fields(self::get_settings());
-            }
+                        if (!in_array($term->slug, get_option('wcs_chosen_categories'))) {
+                            $new_terms[] = $term;
+                        }
+                    }
 
-            /**
-             * Uses the WooCommerce options API to save settings via the @see woocommerce_update_options() function.
-             *
-             * @uses woocommerce_update_options()
-             * @uses self::get_settings()
-             */
-            public static function update_settings() {
-                woocommerce_update_options(self::get_settings());
-            }
+                    $terms = $new_terms;
+                }
 
-            /**
-             * Get all the settings for this plugin for @see woocommerce_admin_fields() function.
-             *
-             * @return array Array of settings for @see woocommerce_admin_fields() function.
-             */
-            public static function get_settings() {
-                $settings = array(
-                    'section_title' => array(
-                        'name' => __('Samples', 'wcs'),
-                        'type' => 'title',
-                        'desc' => '',
-                        'id' => 'wcs_title'
-                    ),
-                    'wcs_id' => array(
-                        'name' => __('Sample Product ID', 'wcs'),
-                        'type' => 'text',
-                        'desc' => __('Write Sample Product ID', 'wcs'),
-                        'id' => 'wcs_id'
-                    ),
-                    'wcs_categories' => array(
-                        'title' => __('Product Categories', 'wcs'),
-                        'desc' => __('Select categories to exclude from main loop.', 'wcs'),
-                        'id' => 'wcs_chosen_categories',
-                        'default' => 'all',
-                        'type' => 'multiselect',
-                        'class' => 'chosen_select',
-                        'css' => 'min-width: 350px;',
-                        'desc_tip' => true,
-                        'options' => self::multiple_select_categories(),
-                    ),
-                    'wcs_custom_css' => array(
-                        'title' => __('Custom CSS', 'wcs'),
-                        'type' => 'textarea',
-                        'id' => 'wcs_custom_css',
-                        'css' => 'width:50%; height: 75px;',
-                        'desc' => __('Apply your own custom CSS. CSS is automatically wrapped with <style></style> tags', 'wcs'),
-                        'default' => __('.sample-products {margin-top: 20px;}', 'wcs'),
-                        'desc_tip' => true,
-                    ),
-                    'section_end' => array(
-                        'type' => 'sectionend',
-                        'id' => 'wcs_end'
-                    )
-                );
-                return apply_filters('wc_settings_tab_wcs_settings', $settings);
+                return $terms;
             }
 
             //Exclude products from a particular category on the shop page
-            function custom_pre_get_posts_query($q) {
+            public function custom_pre_get_posts_query($q) {
                 if (!$q->is_main_query())
                     return;
                 if (!$q->is_post_type_archive())
