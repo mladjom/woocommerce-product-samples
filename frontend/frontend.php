@@ -32,7 +32,7 @@ add_filter('woocommerce_cart_item_name', 'render_meta_on_cart_item', 1, 3);
 
 function render_meta_on_cart_item($title = null, $cart_item = null, $cart_item_key = null) {
     if ($cart_item_key && is_cart()) {
-        echo $title . '<dl class="">
+        echo $title . '<dl class="cart-page">
 				 <dd class=""><p>' . WC()->session->get($cart_item_key . '_name_of_parent') . '</p></dd>
 			  </dl>';
     } else {
@@ -47,7 +47,7 @@ add_filter('woocommerce_checkout_cart_item_quantity', 'render_meta_on_checkout_o
 
 function render_meta_on_checkout_order_review_item($quantity = null, $cart_item = null, $cart_item_key = null) {
     if ($cart_item_key) {
-        echo $quantity . '<dl class="">
+        echo $quantity . '<dl class="checkout-page">
 				 <dd class=""><p>' . WC()->session->get($cart_item_key . '_name_of_parent') . '</p></dd>
 			  </dl>';
     }
@@ -59,7 +59,7 @@ function render_meta_on_checkout_order_review_item($quantity = null, $cart_item 
 add_action('woocommerce_add_order_item_meta', 'parent_name_order_meta_handler', 1, 3);
 
 function parent_name_order_meta_handler($item_id, $values, $cart_item_key) {
-    wc_add_order_item_meta($item_id, "name_of_parent", WC()->session->get($cart_item_key . '_name_of_parent'));
+    wc_add_order_item_meta($item_id, ' ', WC()->session->get($cart_item_key . '_name_of_parent'));
 }
 
 /**

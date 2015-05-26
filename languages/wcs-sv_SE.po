@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce Product Samples 0.2.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/woocommerce-product-samples\n"
 "POT-Creation-Date: 2015-05-23 13:30+0100\n"
-"PO-Revision-Date: 2015-05-23 13:30+0100\n"
+"PO-Revision-Date: 2015-05-25 13:43+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -51,7 +51,7 @@ msgstr ""
 
 #: admin/class-wcs-admin-settings.php:98
 msgid "Add Sample to cart"
-msgstr "Bästell en provbit"
+msgstr "Beställ en provbit"
 
 #: admin/class-wcs-admin-settings.php:102
 msgid "Button position"

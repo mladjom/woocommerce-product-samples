@@ -1,5 +1,4 @@
 <?php
-
 /*
   Plugin Name: WooCommerce Product Samples
   Plugin URI: http://milentijevic.com/wordpress-plugins/wocommerce-product-samples/
@@ -93,7 +92,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
                 $new_terms = array();
 
                 // if a product category and on the shop page
-                if (in_array('product_cat', $taxonomies) && !is_admin() && is_shop()) {
+                if (in_array('product_cat', $taxonomies) && !is_admin() && is_woocommerce()) {
 
                     foreach ($terms as $key => $term) {
 
